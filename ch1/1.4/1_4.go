@@ -29,7 +29,7 @@ func main() {
 	}
 	for line, n := range counts {
 		if n > 1 {
-			fmt.Printf("%d\t%s\t%s\n", n, line, lineAppearances[line])
+			fmt.Printf("%d\t%s%s\n", n, line, lineAppearances[line])
 		}
 	}
 }
@@ -38,8 +38,12 @@ func countLines(f *os.File, filename string, counts map[string]int, lineAppearan
 	input := bufio.NewScanner(f)
 	for input.Scan() {
 		counts[input.Text()]++
+
 		// Probably definitely not very efficient
-		s := []string{lineAppearances[input.Text()], filename}
-		lineAppearances[input.Text()] = strings.Join(s, "\t")
+		if filename != "" {
+			s := []string{lineAppearances[input.Text()], filename}
+			lineAppearances[input.Text()] = strings.Join(s, "\t")
+		}
+
 	}
 }
